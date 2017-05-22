@@ -47,7 +47,7 @@ class AccordionMenu {
   _init() {
     this.$element.find('[data-submenu]').not('.is-active').slideUp(0);//.find('a').css('padding-left', '1rem');
     this.$element.attr({
-      'role': 'menu',
+      'role': 'tree',
       'aria-multiselectable': this.options.multiOpen
     });
 
@@ -61,15 +61,17 @@ class AccordionMenu {
       $elem.attr({
         'aria-controls': subId,
         'aria-expanded': isActive,
-        'role': 'menuitem',
         'id': linkId
       });
       $sub.attr({
         'aria-labelledby': linkId,
         'aria-hidden': !isActive,
-        'role': 'menu',
+        'role': 'group',
         'id': subId
       });
+    });
+    this.$element.find('li').attr({
+      'role': 'treeitem'
     });
     var initPanes = this.$element.find('.is-active');
     if(initPanes.length){
