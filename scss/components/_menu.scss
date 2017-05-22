@@ -359,8 +359,16 @@ $menu-border: $light-gray !default;
     text-align: center;
 
     > .menu {
-      display: inline-block;
-      vertical-align: top;
+      @if $global-flexbox {
+        @include flex-align($x: center, $y: top);
+      }
+      @else {
+        display: inline-block;
+        vertical-align: top;
+      }
+      &.vertical > li > a {
+        justify-content: center;
+      }
     }
   }
 
