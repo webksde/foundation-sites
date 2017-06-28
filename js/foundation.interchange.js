@@ -149,6 +149,7 @@ class Interchange {
     }
     // Replacing background images
     else if (path.match(/\.(gif|jpg|jpeg|png|svg|tiff)([?#].*)?/i)) {
+      path = path.replace(/\(/g, '%28').replace(/\)/g, '%29');
       this.$element.css({ 'background-image': 'url('+path+')' })
           .trigger(trigger);
     }
