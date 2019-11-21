@@ -123,7 +123,7 @@ class AccordionMenu extends Plugin {
             });
         }
       }
-    }).on('keydown.zf.accordionmenu', function(e){
+    }).on('keydown.zf.accordionMenu', function(e){
       var $element = $(this),
           $elements = $element.parent('ul').children('li'),
           $prevElement,
@@ -190,7 +190,6 @@ class AccordionMenu extends Plugin {
           if (preventDefault) {
             e.preventDefault();
           }
-          e.stopImmediatePropagation();
         }
       });
     });//.attr('tabindex', 0);
@@ -234,13 +233,23 @@ class AccordionMenu extends Plugin {
    * @fires AccordionMenu#down
    */
   down($target) {
-    var _this = this;
+    // If having multiple submenus active is disabled, close all the submenus
+    // that are not parents or children of the targeted submenu.
+    if (!this.options.multiOpen) {
+      // The "branch" of the targetted submenu, from the component root to
+      // the active submenus nested in it.
+      const $targetBranch = $target.parentsUntil(this.$element)
+        .add($target)
+        .add($target.find('.is-active'));
+      // All the active submenus that are not in the branch.
+      const $othersActiveSubmenus = this.$element.find('.is-active').not($targetBranch);
 
-    if(!this.options.multiOpen) {
-      this.up(this.$element.find('.is-active').not($target.parentsUntil(this.$element).add($target)));
+      this.up($othersActiveSubmenus);
     }
 
-    $target.addClass('is-active').attr({'aria-hidden': false});
+    $target
+      .addClass('is-active')
+      .attr({ 'aria-hidden': false });
 
     if(this.options.submenuToggle) {
       $target.prev('.submenu-toggle').attr({'aria-expanded': true});
@@ -249,12 +258,12 @@ class AccordionMenu extends Plugin {
       $target.parent('.is-accordion-submenu-parent').attr({'aria-expanded': true});
     }
 
-    $target.slideDown(_this.options.slideSpeed, function () {
+    $target.slideDown(this.options.slideSpeed, () => {
       /**
        * Fires when the menu is done opening.
        * @event AccordionMenu#down
        */
-      _this.$element.trigger('down.zf.accordionMenu', [$target]);
+      this.$element.trigger('down.zf.accordionMenu', [$target]);
     });
   }
 
@@ -264,23 +273,28 @@ class AccordionMenu extends Plugin {
    * @fires AccordionMenu#up
    */
   up($target) {
-    var _this = this;
-    $target.slideUp(_this.options.slideSpeed, function () {
+    const $submenus = $target.find('[data-submenu]');
+    const $allmenus = $target.add($submenus);
+
+    $submenus.slideUp(0);
+    $allmenus
+      .removeClass('is-active')
+      .attr('aria-hidden', true);
+
+    if(this.options.submenuToggle) {
+      $allmenus.prev('.submenu-toggle').attr('aria-expanded', false);
+    }
+    else {
+      $allmenus.parent('.is-accordion-submenu-parent').attr('aria-expanded', false);
+    }
+
+    $target.slideUp(this.options.slideSpeed, () => {
       /**
        * Fires when the menu is done collapsing up.
        * @event AccordionMenu#up
        */
-      _this.$element.trigger('up.zf.accordionMenu', [$target]);
+      this.$element.trigger('up.zf.accordionMenu', [$target]);
     });
-
-    var $menus = $target.find('[data-submenu]').slideUp(0).addBack().attr('aria-hidden', true);
-
-    if(this.options.submenuToggle) {
-      $menus.prev('.submenu-toggle').attr('aria-expanded', false);
-    }
-    else {
-      $menus.parent('.is-accordion-submenu-parent').attr('aria-expanded', false);
-    }
   }
 
   /**

@@ -148,7 +148,7 @@ By inserting a `<small>` element into a header Foundation will scale the header 
 </div>
 
 ```html_example
-<h3>Foundation for Sites <small>Version 6.4.0</small></h3>
+<h3>Foundation for Sites <small>Version 6.5.3</small></h3>
 ```
 
 ---
@@ -359,7 +359,7 @@ Prefer using actual text over text inside a graphic. Assistive technologies can'
 
 ### Contrast
 
-The contrast between the color of an element's text and its background should be high enough that low-vision users can read it. **The minimum recommended contrast ratio is 4.5:1.** There are no automated tools that can effectively check this for you, but if you aren't sure about a specific color combination, you can run it through one of many color contrast checkers, such as [WebAIM's color contrast checker](http://webaim.org/resources/contrastchecker/).
+The contrast between the color of an element's text and its background should be high enough that low-vision users can read it. **The minimum recommended contrast ratio is 4.5:1.** There are no automated tools that can effectively check this for you, but if you aren't sure about a specific color combination, you can run it through one of many color contrast checkers, such as [WebAIM's color contrast checker](https://webaim.org/resources/contrastchecker/).
 
 Google Chrome's [Accessibility Developer Tools](https://chrome.google.com/webstore/detail/accessibility-developer-t/fpkknkljclfencbdbgkenhalefipecmb?hl=en) also includes a contrast checker. By selecting an element in the inspector, you can see if the contrast meets the minimum standards.
 
@@ -384,10 +384,10 @@ We use the `rem` unit nearly everywhere in Foundation, and even wrote a Sass fun
 
 ### More Resources
 
-- [WebAIM: Fonts](http://webaim.org/techniques/fonts/)
-- [WebAIM: Links and HyperText](http://webaim.org/techniques/hypertext/)
-- [WebAIM: Writing Clearly and Simply](http://webaim.org/techniques/semanticstructure/)
-- [WebAIM: Color Contrast Checker](http://webaim.org/resources/contrastchecker/)
+- [WebAIM: Fonts](https://webaim.org/techniques/fonts/)
+- [WebAIM: Links and HyperText](https://webaim.org/techniques/hypertext/)
+- [WebAIM: Writing Clearly and Simply](https://webaim.org/techniques/semanticstructure/)
+- [WebAIM: Color Contrast Checker](https://webaim.org/resources/contrastchecker/)
 
 ---
 
@@ -405,5 +405,5 @@ On top of that, Foundation includes a couple of simple classes you can use to co
 <a class="" data-open-video="4:42"><img src="{{root}}assets/img/icons/watch-video-icon.svg" class="video-icon" height="30" width="30" alt=""> Watch this part in video</a>
 
 <div class="callout primary">
-  <p>Print styles use `!important` to ensure they aren't overriden by more specific selectors. This framework conscientiously avoids using `!important` declarations. This is one of the few components that does.</p>
+  <p>Print styles use `!important` to ensure they aren't overridden by more specific selectors. This framework conscientiously avoids using `!important` declarations. This is one of the few components that does.</p>
 </div>

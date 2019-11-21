@@ -61,6 +61,11 @@ class Drilldown extends Plugin {
     this.$submenuAnchors = this.$element.find('li.is-drilldown-submenu-parent').children('a');
     this.$submenus = this.$submenuAnchors.parent('li').children('[data-submenu]').attr('role', 'group');
     this.$menuItems = this.$element.find('li').not('.js-drilldown-back').attr('role', 'treeitem').find('a');
+
+    // Set the main menu as current by default (unless a submenu is selected)
+    // Used to set the wrapper height when the drilldown is closed/reopened from any (sub)menu
+    this.$currentMenu = this.$element;
+
     this.$element.attr('data-mutate', (this.$element.attr('data-drilldown') || GetYoDigits(6, 'drilldown')));
 
     this._prepareMenu();
@@ -148,7 +153,6 @@ class Drilldown extends Plugin {
     $elem.off('click.zf.drilldown')
     .on('click.zf.drilldown', function(e){
       if($(e.target).parentsUntil('ul', 'li').hasClass('is-drilldown-submenu-parent')){
-        e.stopImmediatePropagation();
         e.preventDefault();
       }
 
@@ -177,7 +181,7 @@ class Drilldown extends Plugin {
   _registerEvents() {
     if(this.options.scrollTop){
       this._bindHandler = this._scrollTop.bind(this);
-      this.$element.on('open.zf.drilldown hide.zf.drilldown closed.zf.drilldown',this._bindHandler);
+      this.$element.on('open.zf.drilldown hide.zf.drilldown close.zf.drilldown closed.zf.drilldown',this._bindHandler);
     }
     this.$element.on('mutateme.zf.trigger', this._resize.bind(this));
   }
@@ -280,7 +284,6 @@ class Drilldown extends Plugin {
           if (preventDefault) {
             e.preventDefault();
           }
-          e.stopImmediatePropagation();
         }
       });
     }); // end keyboardAccess
@@ -289,19 +292,33 @@ class Drilldown extends Plugin {
   /**
    * Closes all open elements, and returns to root menu.
    * @function
+   * @fires Drilldown#close
    * @fires Drilldown#closed
    */
   _hideAll() {
-    var $elem = this.$element.find('.is-drilldown-submenu.is-active').addClass('is-closing');
-    if(this.options.autoHeight) this.$wrapper.css({height:$elem.parent().closest('ul').data('calcHeight')});
-    $elem.one(transitionend($elem), function(e){
+    var $elem = this.$element.find('.is-drilldown-submenu.is-active')
+    $elem.addClass('is-closing');
+
+    if (this.options.autoHeight) {
+      const calcHeight = $elem.parent().closest('ul').data('calcHeight');
+      this.$wrapper.css({ height: calcHeight });
+    }
+
+    /**
+     * Fires when the menu is closing.
+     * @event Drilldown#close
+     */
+    this.$element.trigger('close.zf.drilldown');
+
+    $elem.one(transitionend($elem), () => {
       $elem.removeClass('is-active is-closing');
+
+      /**
+       * Fires when the menu is fully closed.
+       * @event Drilldown#closed
+       */
+      this.$element.trigger('closed.zf.drilldown');
     });
-        /**
-         * Fires when the menu is fully closed.
-         * @event Drilldown#closed
-         */
-    this.$element.trigger('closed.zf.drilldown');
   }
 
   /**
@@ -315,7 +332,6 @@ class Drilldown extends Plugin {
     $elem.off('click.zf.drilldown');
     $elem.children('.js-drilldown-back')
       .on('click.zf.drilldown', function(e){
-        e.stopImmediatePropagation();
         // console.log('mouseup on back');
         _this._hide($elem);
 
@@ -337,7 +353,6 @@ class Drilldown extends Plugin {
     this.$menuItems.not('.is-drilldown-submenu-parent')
         .off('click.zf.drilldown')
         .on('click.zf.drilldown', function(e){
-          // e.stopImmediatePropagation();
           setTimeout(function(){
             _this._hideAll();
           }, 0);
@@ -392,6 +407,9 @@ class Drilldown extends Plugin {
       _this._setHideSubMenuClasses($(this));
     });
 
+    // Save the menu as the currently displayed one.
+    this.$currentMenu = $elem;
+
     // If target menu is root, focus first link & exit
     if ($elem.is('[data-drilldown]')) {
       if (autoFocus === true) $elem.find('li[role="treeitem"] > a').first().focus();
@@ -433,9 +451,16 @@ class Drilldown extends Plugin {
    * @param {jQuery} $elem - the current element with a submenu to open, i.e. the `li` tag.
    */
   _show($elem) {
-    if(this.options.autoHeight) this.$wrapper.css({height:$elem.children('[data-submenu]').data('calcHeight')});
+    const $submenu = $elem.children('[data-submenu]');
+
     $elem.attr('aria-expanded', true);
-    $elem.children('[data-submenu]').addClass('is-active').removeClass('invisible').attr('aria-hidden', false);
+
+    this.$currentMenu = $submenu;
+    $submenu.addClass('is-active').removeClass('invisible').attr('aria-hidden', false);
+    if (this.options.autoHeight) {
+      this.$wrapper.css({ height: $submenu.data('calcHeight') });
+    }
+
     /**
      * Fires when the submenu has opened.
      * @event Drilldown#open
@@ -473,18 +498,24 @@ class Drilldown extends Plugin {
    * @private
    */
   _getMaxDims() {
-    var  maxHeight = 0, result = {}, _this = this;
+    var maxHeight = 0, result = {}, _this = this;
+
+    // Recalculate menu heights and total max height
     this.$submenus.add(this.$element).each(function(){
       var numOfElems = $(this).children('li').length;
       var height = Box.GetDimensions(this).height;
+
       maxHeight = height > maxHeight ? height : maxHeight;
+
       if(_this.options.autoHeight) {
         $(this).data('calcHeight',height);
-        if (!$(this).hasClass('is-drilldown-submenu')) result['height'] = height;
       }
     });
 
-    if(!this.options.autoHeight) result['min-height'] = `${maxHeight}px`;
+    if (this.options.autoHeight)
+      result['height'] = this.$currentMenu.data('calcHeight');
+    else
+      result['min-height'] = `${maxHeight}px`;
 
     result['max-width'] = `${this.$element[0].getBoundingClientRect().width}px`;
 
@@ -526,7 +557,7 @@ Drilldown.defaults = {
    * Drilldowns depend on styles in order to function properly; in the default build of Foundation these are
    * on the `drilldown` class. This option auto-applies this class to the drilldown upon initialization.
    * @option
-   * @type {boolian}
+   * @type {boolean}
    * @default true
    */
   autoApplyClass: true,

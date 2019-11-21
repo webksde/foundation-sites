@@ -77,7 +77,6 @@ function animate(isIn, element, animation, cb) {
 
   // Start the animation
   requestAnimationFrame(() => {
-    element[0].offsetWidth;
     element
       .css('transition', '')
       .addClass(activeClass);
@@ -100,5 +99,5 @@ function animate(isIn, element, animation, cb) {
   }
 }
 
-export {Move, Motion};
+export { Move, Motion };
 

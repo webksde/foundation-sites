@@ -2,7 +2,7 @@
 
 import $ from 'jquery';
 import { Plugin } from './foundation.core.plugin';
-import { rtl as Rtl } from './foundation.core.utils';
+import { rtl as Rtl, ignoreMousedisappear } from './foundation.core.utils';
 import { Keyboard } from './foundation.util.keyboard';
 import { Nest } from './foundation.util.nest';
 import { Box } from './foundation.util.box';
@@ -108,15 +108,16 @@ class DropdownMenu extends Plugin {
 
       if (hasSub) {
         if (hasClicked) {
-          if (!_this.options.closeOnClick || (!_this.options.clickOpen && !hasTouch) || (_this.options.forceFollow && hasTouch)) { return; }
-          else {
-            e.stopImmediatePropagation();
-            e.preventDefault();
-            _this._hide($elem);
+          if (!_this.options.closeOnClick
+            || (!_this.options.clickOpen && !hasTouch)
+            || (_this.options.forceFollow && hasTouch)) {
+            return;
           }
-        } else {
           e.preventDefault();
-          e.stopImmediatePropagation();
+          _this._hide($elem);
+        }
+        else {
+          e.preventDefault();
           _this._show($sub);
           $elem.add($elem.parentsUntil(_this.$element, `.${parClass}`)).attr('data-is-click', true);
         }
@@ -139,28 +140,28 @@ class DropdownMenu extends Plugin {
     }
 
     if (!this.options.disableHover) {
-      this.$menuItems.on('mouseenter.zf.dropdownMenu', function(e) {
+      this.$menuItems.on('mouseenter.zf.dropdownMenu', function (e) {
         var $elem = $(this),
-            hasSub = $elem.hasClass(parClass);
+          hasSub = $elem.hasClass(parClass);
 
         if (hasSub) {
           clearTimeout($elem.data('_delay'));
-          $elem.data('_delay', setTimeout(function() {
+          $elem.data('_delay', setTimeout(function () {
             _this._show($elem.children('.is-dropdown-submenu'));
           }, _this.options.hoverDelay));
         }
-      }).on('mouseleave.zf.dropdownMenu', function(e) {
+      }).on('mouseleave.zf.dropdownmenu', ignoreMousedisappear(function (e) {
         var $elem = $(this),
             hasSub = $elem.hasClass(parClass);
         if (hasSub && _this.options.autoclose) {
           if ($elem.attr('data-is-click') === 'true' && _this.options.clickOpen) { return false; }
 
           clearTimeout($elem.data('_delay'));
-          $elem.data('_delay', setTimeout(function() {
+          $elem.data('_delay', setTimeout(function () {
             _this._hide($elem);
           }, _this.options.closingTime));
         }
-      });
+      }));
     }
     this.$menuItems.on('keydown.zf.dropdownMenu', function(e) {
       var $element = $(e.target).parentsUntil('ul', '[role="menuitem"]'),
@@ -204,9 +205,6 @@ class DropdownMenu extends Plugin {
           _this._hide(_this.$element);
           _this.$menuItems.eq(0).children('a').focus(); // focus to first element
           e.preventDefault();
-        },
-        handled: function() {
-          e.stopImmediatePropagation();
         }
       };
 
@@ -275,8 +273,8 @@ class DropdownMenu extends Plugin {
     const $body = $(document.body);
     this._removeBodyHandler();
     $body.on('click.zf.dropdownMenu tap.zf.dropdownMenu', (e) => {
-      var $link = this.$element.find(e.target);
-      if ($link.length) return;
+      var isItself = !!$(e.target).closest(this.$element).length;
+      if (isItself) return;
 
       this._hide();
       this._removeBodyHandler();
@@ -322,7 +320,7 @@ class DropdownMenu extends Plugin {
     if (this.options.closeOnClick) { this._addBodyHandler(); }
     /**
      * Fires when the new dropdown pane is visible.
-     * @event Dropdownmenu#show
+     * @event DropdownMenu#show
      */
     this.$element.trigger('show.zf.dropdownMenu', [$sub]);
   }
@@ -332,6 +330,7 @@ class DropdownMenu extends Plugin {
    * @function
    * @param {jQuery} $elem - element with a submenu to hide
    * @param {Number} idx - index of the $tabs collection to hide
+   * @fires DropdownMenu#hide
    * @private
    */
   _hide($elem, idx) {
@@ -369,7 +368,7 @@ class DropdownMenu extends Plugin {
 
       /**
        * Fires when the open menus are closed.
-       * @event Dropdownmenu#hide
+       * @event DropdownMenu#hide
        */
       this.$element.trigger('hide.zf.dropdownMenu', [$toClose]);
     }

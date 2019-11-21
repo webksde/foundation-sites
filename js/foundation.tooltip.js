@@ -2,7 +2,7 @@
 
 import $ from 'jquery';
 
-import { GetYoDigits } from './foundation.core.utils';
+import { GetYoDigits, ignoreMousedisappear } from './foundation.core.utils';
 import { MediaQuery } from './foundation.util.mediaQuery';
 import { Triggers } from './foundation.util.triggers';
 import { Positionable } from './foundation.positionable';
@@ -74,7 +74,13 @@ class Tooltip extends Positionable {
   _getDefaultPosition() {
     // handle legacy classnames
     var position = this.$element[0].className.match(/\b(top|left|right|bottom)\b/g);
+    var elementClassName = this.$element[0].className;
+    if (this.$element[0] instanceof SVGElement) {
+        elementClassName = elementClassName.baseVal;
+    }
     return position ? position[0] : 'top';
+    var position = elementClassName.match(/\b(top|left|right)\b/g);
+        position = position ? position[0] : 'tp';
   }
 
   _getDefaultAlignment() {
@@ -208,12 +214,12 @@ class Tooltip extends Positionable {
           }, _this.options.hoverDelay);
         }
       })
-      .on('mouseleave.zf.tooltip', function(e) {
+      .on('mouseleave.zf.tooltip', ignoreMousedisappear(function(e) {
         clearTimeout(_this.timeout);
         if (!isFocus || (_this.isClick && !_this.options.clickOpen)) {
           _this.hide();
         }
-      });
+      }));
     }
 
     if (hasTouch) {
@@ -225,7 +231,6 @@ class Tooltip extends Positionable {
 
     if (this.options.clickOpen) {
       this.$element.on('mousedown.zf.tooltip', function(e) {
-        e.stopImmediatePropagation();
         if (_this.isClick) {
           //_this.hide();
           // _this.isClick = false;
@@ -238,7 +243,6 @@ class Tooltip extends Positionable {
       });
     } else {
       this.$element.on('mousedown.zf.tooltip', function(e) {
-        e.stopImmediatePropagation();
         _this.isClick = true;
       });
     }

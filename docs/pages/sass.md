@@ -6,11 +6,11 @@ video: mYiyunVQdMY
 
 <div class="callout training-callout">
   <p>Get trained up on Foundation's Sass with our online webinar training. Sass allows you to write dramatically more efficient code. We'll go over things like how to install and start compiling Sass, nesting mixins and functions, and writing fully semantic CSS using Foundation mixins for insanely maintainable code.</p>
-  <a href="http://zurb.com/university/advanced-foundation-training" target="_blank">Reserve your spot →</a>
+  <a href="https://zurb.com/university/advanced-foundation-training" target="_blank">Reserve your spot →</a>
 </div>
 
 <div class="primary callout">
-  <p>Not familiar with Sass? The [official tutorial](http://sass-lang.com/guide) on sass-lang.com is a great place to start.</p>
+  <p>Not familiar with Sass? The [official tutorial](https://sass-lang.com/guide) on sass-lang.com is a great place to start.</p>
 </div>
 
 ## Compatibility
@@ -79,7 +79,7 @@ Finally, add an `@import` statement to the top of your primary Sass file. Refer 
 
 You're also going to want a settings file for your project, which will allow you to modify the default styles of Foundation. **[Download the latest settings file here](https://raw.githubusercontent.com/zurb/foundation-sites/master/scss/settings/_settings.scss)**, add it to your project as `_settings.scss`, then import it *before* Foundation itself. 
 
-<div class="callout>
+<div class="callout">
 The settings file needs to import `util/util` from Foundation. Please ensure that the Foundation folder is included in Sass or change `@import util/util` for it to points to the full path of the file. For example, NPM users may need to change the import to `node_modules/foundation-sites/scss/util/util`.
 </div>
 

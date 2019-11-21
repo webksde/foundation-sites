@@ -7,7 +7,7 @@ sass: scss/xy-grid/*.scss
 
 <div class="callout training-callout">
   <p>The XY Grid is a huge advancement in Grids. Stay up-to-date with all the new features in Foundation 6.4 with our online webinar training. You’ll come away knowing the ins and outs of the XY Grid to create complex layouts faster and with less code. Not to mention all the useful UI components and Foundation JavaScript you’ll learn. You’ll make your coworkers jealous.</p>
-  <a href="http://zurb.com/university/foundation-intro" target="_blank">Don’t miss out on the upcoming Foundation trainings →</a>
+  <a href="https://zurb.com/university/foundation-intro" target="_blank">Don’t miss out on the upcoming Foundation trainings →</a>
 </div>
 
 ## XY Grid Basics
@@ -18,7 +18,7 @@ The XY grid works very similarly to the standard float grid, but includes a numb
 
 ## Browser support
 
-The XY grid is supported in Chrome, Firefox, Safari 6+, IE10+, iOS 7+, and Android 4.4+. Flexbox is supported in Android 2, but not reliably enough for use with this grid. ([View Flexbox browser support.](http://caniuse.com/#feat=flexbox)) We recommend only using the XY grid on projects that can live with purely cutting-edge browser support.
+The XY grid is supported in Chrome, Firefox, Safari 6+, IE11, iOS 7+, and Android 4.4+. Flexbox is supported in Android 2, but not reliably enough for use with this grid. ([View Flexbox browser support.](http://caniuse.com/#feat=flexbox)) We recommend only using the XY grid on projects that can live with purely cutting-edge browser support.
 
 ---
 
@@ -81,7 +81,7 @@ The structure of XY grid uses `.grid-x`, `.grid-y`, and `.cell` as its base. Wit
 ## Gutters
 
 The defining feature of the XY grid is the ability to use margin AND padding grids in harmony.
-To define a grid type, simply set `.grid-margin-x` or `.grid-padding-x` on the grid.
+To define a grid type, simply set `.grid-margin-x`/`.grid-margin-y` or `.grid-padding-x`/`.grid-padding-y` on the grid.
 
 <p>
   <a class="" data-open-video="5:43"><img src="{{root}}assets/img/icons/watch-video-icon.svg" class="video-icon" height="30" width="30" alt=""> Watch this part in video</a>
@@ -105,7 +105,7 @@ To define a grid type, simply set `.grid-margin-x` or `.grid-padding-x` on the g
 
 ## Grid Container
 
-The grid defaults to the full width of the available space. To contain it use the `grid-container` class. The container will be centered and have a max-width equal to your `$grid-container` setting (1200px by default), along with padding on the left/right equal to half your `$grid-container-padding` setting.
+The grid defaults to the full width of the available space. To contain it horizontally use the `grid-container` class. The container will be centered and have a max-width equal to your `$grid-container` setting (1200px by default), along with padding on the left/right equal to half your `$grid-container-padding` setting.
 
 ```html
 <div class="grid-container">
@@ -203,7 +203,7 @@ To switch back to the auto behavior from a percentage or shrink behavior, use th
 
 ---
 
-## Collapse Cells
+## Collapse Cells <span class="label secondary">X Grid only</span>
 
 The `.[size]-[gutter-type]-collapse` class lets you remove cell gutters.
 
@@ -222,9 +222,9 @@ There are times when you won't want each media query to be collapsed. In this ca
 
 ---
 
-## Offsets
+## Offsets <span class="label secondary">X Grid only</span>
 
-Offsets work by applying `margin-left` (or `margin-top` for a vertical grid) to a grid.
+Offsets work by applying `margin-left` to a grid.
 
 ```html_example
 <div class="grid-x grid-margin-x">
@@ -235,9 +235,9 @@ Offsets work by applying `margin-left` (or `margin-top` for a vertical grid) to 
 
 ---
 
-## Block Grids
+## Block Grids <span class="label secondary">X Grid only</span>
 
-To define cell widths within a direction-level, instead of the individual cell level, add the class `.[size]-up-[n]` to a `grid-x` or `grid-y`, where `[n]` is the number of cells to display per direction, and `[size]` is the breakpoint at which to apply the effect.
+To define cell widths within a direction-level, instead of the individual cell level, add the class `.[size]-up-[n]` to a `grid-x`, where `[n]` is the number of cells to display per direction, and `[size]` is the breakpoint at which to apply the effect.
 
 <div class="callout primary">This example uses padding grid but this can be used with margin grid too.</div>
 
@@ -255,6 +255,8 @@ To define cell widths within a direction-level, instead of the individual cell l
   <div class="cell">cell</div>
 </div>
 ```
+
+Block Grids are not available for the vertical grids. Use the [basic layout](#vertical-grids) with a size applied on each cell of the grid instead.
 
 ---
 
@@ -400,7 +402,7 @@ This is especially powerful as you can specify where you want the gutters, like 
 ### Cells
 
 Use the `xy-cell()` mixin to create a cell. There are a number of ways to define the size of a cell.
-`xy-cell` accepts a few different keywords as well as specific sizes: `full` (full width), `auto` (automatic width) and `shrink` (take up only the space it needs).
+`xy-cell` accepts a few different keywords as well as specific sizes: `full` (full width), `auto` (automatic width) and `shrink` (take up only the space it needs) or any fraction (`6`, `50%`, `1 of 2` or `1/2`...).
 
 ```scss
 .main-content {
@@ -425,6 +427,24 @@ The cell size calculator can also be accessed as a function. This gives you the 
   width: xy-cell-size(1 of 7);
 }
 ```
+
+A cell is composed of 3 parts: the base, the size and the gutters. In order to avoid duplicating properties, you can choose the parts to generate with the `$output` option, or call the XY cell mixins dedicated to each part individually.
+
+```scss
+.my-cell {
+  @include xy-cell(12, $gutters: none);
+}
+.my-cell.half-size {
+  @include xy-cell(6, $gutters: none, $output: (size));
+  // Or @include xy-cell-size(6);
+}
+```
+
+<div class="callout warn">
+  XY cell with margin gutters (by default) has gutters defined within their width/height. For this reason, you need to generate the gutter part of cells with margin gutters even when you only want to change the size.
+</div>
+
+Refer to the Sass documentation of the [xy-cell](#xy-cell) mixin for the full list of arguments. See also [xy-cell-base](#xy-cell-base), [xy-cell-size](#xy-cell-size) and [xy-cellgutters](#xy-cellgutters).
 
 ---
 

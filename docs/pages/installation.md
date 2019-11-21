@@ -23,6 +23,19 @@ Foundation is available on npm, Bower, Meteor, and Composer. The package include
   </div>
 
   <div class="cell small-2 text-right">
+    <a href="https://www.npmjs.com/package/foundation-sites">
+      <img class="docs-install-vendor-icon" src="{{root}}assets/img/icons/logo-pnpm.svg" alt="PNPM">
+    </a>
+  </div>
+  <div class="cell small-10">
+    <div class="docs-code">
+      <code class="bash">
+        pnpm install foundation-sites
+      </code>
+    </div>
+  </div>
+
+  <div class="cell small-2 text-right">
     <a href="https://yarnpkg.com/en/package/foundation-sites">
       <img class="docs-install-vendor-icon" src="{{root}}assets/img/icons/logo-yarn.svg" alt="Yarn">
     </a>
@@ -182,7 +195,18 @@ After you selected "Foundation for Sites", Foundation CLI will ask you which tem
 <div class="callout info">
   <p><strong>Foundation 5 users</strong>: if you already have the Foundation 5 CLI on your machine, you will only be able to access one of the commands, depending on how your command line environment is configured.</p>
 
-  <p>To remove the Foundation 5 CLI, run <code>gem uninstall foundation</code>. After testing this new CLI, if you want to go back to the old CLI. To remove the Foundation 6 CLI, run <code>npm uninstall foundation-cli --global</code>.</p>
+  <p>To remove the Foundation 5 CLI, run <code>gem uninstall foundation</code>. After testing the Foundation 6 CLI, if you want to remove it to go back to the old CLI, run <code>npm uninstall foundation-cli --global</code>.</p>
+</div>
+
+<div class="callout info">
+  <p><strong>Windows users</strong>: make sure you've python v2.7 available in your node environment since it's required by the node-gyp tool. There are two way to achieve this</p>
+
+  <ol>
+    <li>Install the <a href="https://github.com/felixrieseberg/windows-build-tools">windows-build-tools</a> (recommended) and make python afterwards accessible via <code>npm config set python "%USERPROFILE%\.windows-build-tools\python27\python.exe"</code></li>
+    <li>Install <a href="https://www.python.org/downloads/">python</a> (not recommended) and add it to your system environment variables</li>
+  </ol>
+ 
+  <p>The first way is recommended if you've not installed python v2.7 yet as it doesn't affect your machine outside the node environment. In case you've already installed python v2.7 you may of course skip both ways and start using foundationc-cli immediately.</p>
 </div>
 
 ---
@@ -202,7 +226,7 @@ After you selected "Foundation for Sites", Foundation CLI will ask you which tem
       If you aren't into Sass, we have a starter template with compiled CSS and JavaScript, as well as a starting `index.html` file for you to hack on. Just unzip and get coding!
     </p>
     <p class="text-center">
-      <a href="http://foundation.zurb.com/sites/download" class="button">Download Foundation</a>
+      <a href="https://get.foundation/sites/download" class="button">Download Foundation</a>
     </p>
   </div>
 </div>
@@ -221,7 +245,7 @@ The folks at [jsDelivr](https://www.jsdelivr.com) host the compressed Foundation
 <script src="https://cdn.jsdelivr.net/npm/foundation-sites@6.4.3/dist/js/foundation.min.js" integrity="sha256-mRYlCu5EG+ouD07WxLF8v4ZAZYCA6WrmdIXyn1Bv9Vk= sha384-KzKofw4qqetd3kvuQ5AdapWPqV1ZI+CnfyfEwZQgPk8poOLWaabfgJOfmW7uI+AV sha512-0gHfaMkY+Do568TgjJC2iMAV0dQlY4NqbeZ4pr9lVUTXQzKu8qceyd6wg/3Uql9qA2+3X5NHv3IMb05wb387rA==" crossorigin="anonymous"></script>
 ```
 
-From Foundation 6.4, flex is enabled by default and **only the new XY Grid is availaible**. However, others CSS versions are availaible for backward compatibility and the most common usage cases. For others uses and advanced customization, we recommand to build Foundation with custom settings (see others installation methods).
+From Foundation 6.4, flex is enabled by default and **only the new XY Grid is available**. However, others CSS versions are available for backward compatibility and the most common usage cases. For others uses and advanced customization, we recommand to build Foundation with custom settings (see others installation methods).
 
 ```html
 <!-- foundation-float.min.css: Compressed CSS with legacy Float Grid -->
@@ -272,4 +296,4 @@ Start with this HTML template and adapt it to your needs. Be sure to include the
 
 ## Other Integrations
 
-The Foundation community has helped us integrate the framework into Rails, WordPress, Django, and more. Head to our [resources page](http://foundation.zurb.com/sites/resources) to find even more ways to use Foundation.
+The Foundation community has helped us integrate the framework into Rails, WordPress, Django, and more. Head to our [resources page](https://get.foundation/sites/resources) to find even more ways to use Foundation.
