@@ -34,7 +34,7 @@ Not all projects require Prototyping Utilities and adding utility classes like t
 	</p>
 </div>
 
-If you're using the CSS version of Foundation, you can generate a <a href="https://get.foundation/sites/download">custom download of Foundation</a> with prototype mode enabled. If you're using the Sass version of Foundation, you can enable prototype mode in two ways:
+If you're using the CSS version of Foundation, you can generate a <a href="https://download.get.foundation/sites/download">custom download of Foundation</a> with prototype mode enabled. If you're using the Sass version of Foundation, you can enable prototype mode in two ways:
 
 If you use the `foundation-everything()` mixin in your main Sass file, just pass in `$prototype: true` to enable the prototype mode.
 
@@ -304,7 +304,7 @@ This creates a tiny separator below the heading of an element and is usually use
 
 ## Font Styling
 
-You can use font styling to style your text. You can change the font styling by adding `font-normal`, `font-bold`, `font-italic` to an element. You can also wider the text of an element with `font-wide`.
+You can use font styling to style your text. You can change the font styling by adding `font-normal`, `font-bold`, `font-italic` to an element. You can also larger the text of an element with `font-wide`.
 
 ```html_example
 <p class="font-wide">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
