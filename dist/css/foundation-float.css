@@ -2900,7 +2900,7 @@ a.thumbnail {
   position: relative; }
   [data-whatinput='mouse'] .menu li {
     outline: 0; }
-  .menu a,
+  .menu li > a,
   .menu .button {
     line-height: 1;
     text-decoration: none;
@@ -2908,7 +2908,7 @@ a.thumbnail {
     padding: 0.7rem 1rem; }
   .menu input,
   .menu select,
-  .menu a,
+  .menu li > a,
   .menu button {
     margin-bottom: 0; }
   .menu input {
@@ -3314,7 +3314,7 @@ a.thumbnail {
   left: auto;
   margin-top: -3px; }
 
-[data-whatinput='mouse'] .dropdown.menu a {
+[data-whatinput='mouse'] .dropdown.menu li > a {
   outline: 0; }
 
 .dropdown.menu > li > a {

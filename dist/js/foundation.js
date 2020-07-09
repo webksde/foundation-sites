@@ -5722,8 +5722,9 @@ function (_Plugin) {
       var isScrollingUp = this.scrollPos > newScrollPos;
       this.scrollPos = newScrollPos;
       var activeIdx; // Before the first point: no link
+      // #webksde#TF2020-07-09: Fixed https://github.com/foundation/foundation-sites/issues/11754
 
-      if (newScrollPos < this.points[0]) {}
+      if (newScrollPos < this.points[0] - this.options.offset - (isScrollingUp ? this.options.threshold : 0)) {}
       /* do nothing */
       // At the bottom of the page: last link
       else if (newScrollPos + this.winHeight === this.docHeight) {
@@ -13876,7 +13877,7 @@ Triggers.init = function ($, Foundation) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Users/joeworkman/Development/foundation-sites/js/entries/foundation.js */"./js/entries/foundation.js");
+module.exports = __webpack_require__(/*! /home/thomas/foundation-sites/js/entries/foundation.js */"./js/entries/foundation.js");
 
 
 /***/ }),
