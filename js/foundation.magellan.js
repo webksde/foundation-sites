@@ -162,7 +162,7 @@ class Magellan extends Plugin {
 
     let activeIdx;
     // Before the first point: no link
-    // #webksde#TF2020-07-09: Fixed https://github.com/foundation/foundation-sites/issues/11754
+
     if(newScrollPos < this.points[0] - this.options.offset - (isScrollingUp ? this.options.threshold : 0)){ /* do nothing */ }
     // At the bottom of the page: last link
     else if(newScrollPos + this.winHeight === this.docHeight){ activeIdx = this.points.length - 1; }
